@@ -2,4 +2,5 @@ rootProject.name = 'tv-advertisement-shop'
 include 'tv-channel-spi'
 include 'simple-tv-channel'
 include 'xyz-tv-channel'
+include 'shop-backend'
 
