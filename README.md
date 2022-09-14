@@ -16,6 +16,6 @@
 
 
 ## Plugins
-* In `shop-backend/resorces/plugin-examples` directory you can find ready to use jar plugins
+* In shop-backend `resorces/plugin-examples` directory you can find ready to use jar plugins
 * To create your own plugin use `TvChannelAdvertisementProvider` interface from `tv-channel-spi` module.
-  (See `simple-tv-channel` and `xyz-tv-channel` implementation)
+  (see `simple-tv-channel` and `xyz-tv-channel` implementation)
