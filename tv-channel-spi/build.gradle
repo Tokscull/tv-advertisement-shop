@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+}
+
+group 'com.github.tokscull'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+    archivesBaseName = project.name
+}
+
+
+tasks.named('sourcesJar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+    archivesBaseName = project.name
+}
+
+tasks.named('javadocJar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+    archivesBaseName = project.name
+}
+
