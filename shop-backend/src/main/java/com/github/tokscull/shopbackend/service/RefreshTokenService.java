@@ -1,6 +1,6 @@
 package com.github.tokscull.shopbackend.service;
 
-import com.github.tokscull.shopbackend.exceptions.EntityNotFoundException;
+import com.github.tokscull.shopbackend.exception.EntityNotFoundException;
 import com.github.tokscull.shopbackend.model.RefreshToken;
 import com.github.tokscull.shopbackend.repository.RefreshTokenRepository;
 import lombok.AllArgsConstructor;

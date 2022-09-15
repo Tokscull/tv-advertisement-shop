@@ -1,12 +1,10 @@
 package com.github.tokscull.shopbackend.controller;
 
-import com.github.tokscull.shopbackend.exceptions.EntityAlreadyExistsException;
-import com.github.tokscull.shopbackend.exceptions.EntityNotFoundException;
+import com.github.tokscull.shopbackend.exception.EntityAlreadyExistsException;
+import com.github.tokscull.shopbackend.exception.EntityNotFoundException;
 import com.github.tokscull.shopbackend.model.TvChannel;
 import com.github.tokscull.shopbackend.model.dto.TvChannelAdvertisementRequest;
 import com.github.tokscull.shopbackend.model.dto.TvChannelAdvertisementResponse;
-import com.github.tokscull.shopbackend.repository.TvChannelRepository;
-import com.github.tokscull.shopbackend.service.FileStorageService;
 import com.github.tokscull.shopbackend.service.TvChannelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.*;
-
 
 @RestController
 @RequestMapping("/api/tv-channels")
@@ -26,8 +22,6 @@ import java.util.*;
 @Slf4j
 public class TvChannelController {
 
-    private final FileStorageService fileStorageService;
-    private final TvChannelRepository tvChannelRepository;
     private final TvChannelService tvChannelService;
 
 
@@ -44,13 +38,7 @@ public class TvChannelController {
     public ResponseEntity<TvChannel> createChannel(@RequestParam("channelName") String channelName,
                                                    @RequestParam("file") MultipartFile file) {
         log.info("Received request to save new channel: {}", channelName);
-
-        if(tvChannelRepository.existsByName(channelName)) {
-            throw new EntityAlreadyExistsException("Channel already exist");
-        }
-
-        String pluginPath = fileStorageService.storeFile(file);
-        return ResponseEntity.status(HttpStatus.CREATED).body(tvChannelRepository.save(new TvChannel(channelName, pluginPath)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(tvChannelService.createChannel(channelName, file));
     }
 
     /**

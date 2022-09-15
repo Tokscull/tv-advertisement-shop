@@ -1,6 +1,6 @@
 package com.github.tokscull.shopbackend.controller;
 
-import com.github.tokscull.shopbackend.exceptions.EntityNotFoundException;
+import com.github.tokscull.shopbackend.exception.EntityNotFoundException;
 import com.github.tokscull.shopbackend.model.User;
 import com.github.tokscull.shopbackend.service.UserService;
 import lombok.AllArgsConstructor;

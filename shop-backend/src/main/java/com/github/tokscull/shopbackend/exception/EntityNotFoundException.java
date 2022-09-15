@@ -1,4 +1,4 @@
-package com.github.tokscull.shopbackend.exceptions;
+package com.github.tokscull.shopbackend.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

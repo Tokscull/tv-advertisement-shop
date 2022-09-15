@@ -1,7 +1,7 @@
 package com.github.tokscull.shopbackend.controller;
 
-import com.github.tokscull.shopbackend.exceptions.EntityAlreadyExistsException;
-import com.github.tokscull.shopbackend.exceptions.EntityNotFoundException;
+import com.github.tokscull.shopbackend.exception.EntityAlreadyExistsException;
+import com.github.tokscull.shopbackend.exception.EntityNotFoundException;
 import com.github.tokscull.shopbackend.model.dto.AuthenticationResponse;
 import com.github.tokscull.shopbackend.model.dto.LoginRequest;
 import com.github.tokscull.shopbackend.model.dto.RefreshTokenRequest;

@@ -1,6 +1,6 @@
 package com.github.tokscull.shopbackend.service;
 
-import com.github.tokscull.shopbackend.exceptions.EntityAlreadyExistsException;
+import com.github.tokscull.shopbackend.exception.EntityAlreadyExistsException;
 import com.github.tokscull.shopbackend.model.Role;
 import com.github.tokscull.shopbackend.model.User;
 import com.github.tokscull.shopbackend.model.dto.AuthenticationResponse;
@@ -9,7 +9,6 @@ import com.github.tokscull.shopbackend.model.dto.RefreshTokenRequest;
 import com.github.tokscull.shopbackend.model.dto.RegisterRequest;
 import com.github.tokscull.shopbackend.repository.RoleRepository;
 import com.github.tokscull.shopbackend.repository.UserRepository;
-import com.github.tokscull.shopbackend.util.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,13 +32,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final AuthenticationManager authenticationManager;
-    private final JwtProvider jwtProvider;
+    private final TokenService tokenService;
     private final RefreshTokenService refreshTokenService;
 
 
     public void signup(RegisterRequest registerRequest) {
-        if (userService.existsByUsername(registerRequest.getUsername())) {
-            throw new EntityAlreadyExistsException("User already exists");
+        if (Boolean.TRUE.equals(userService.existsByUsername(registerRequest.getUsername()))) {
+            throw new EntityAlreadyExistsException("User already exists for username: " + registerRequest.getUsername());
         }
 
         User user = new User();
@@ -55,11 +54,11 @@ public class AuthService {
                 loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        String token = jwtProvider.generateToken(authenticate);
+        String token = tokenService.generateToken(authenticate);
         return AuthenticationResponse.builder()
                 .accessToken(token)
                 .refreshToken(refreshTokenService.generateRefreshToken().getToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .expiresAt(Instant.now().plusMillis(tokenService.getJwtExpirationInMillis()))
                 .username(loginRequest.getUsername())
                 .build();
     }
@@ -68,11 +67,11 @@ public class AuthService {
         refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
         Set<String> roles = userService.getUserByUsername(refreshTokenRequest.getUsername())
                 .getRoles().stream().map(Role::getName).collect(Collectors.toSet());
-        String token = jwtProvider.generateTokenWithUserNameAndRoles(refreshTokenRequest.getUsername(), roles);
+        String token = tokenService.generateTokenWithUserNameAndRoles(refreshTokenRequest.getUsername(), roles);
         return AuthenticationResponse.builder()
                 .accessToken(token)
                 .refreshToken(refreshTokenRequest.getRefreshToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .expiresAt(Instant.now().plusMillis(tokenService.getJwtExpirationInMillis()))
                 .username(refreshTokenRequest.getUsername())
                 .build();
     }
