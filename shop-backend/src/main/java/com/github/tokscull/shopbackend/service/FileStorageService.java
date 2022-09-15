@@ -20,6 +20,11 @@ public class FileStorageService {
     private Path pluginDir;
 
     public String storeFile(MultipartFile file) {
+
+        if(file.isEmpty()) {
+            throw new FileStorageException("File is empty");
+        }
+
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             Path targetLocation = this.pluginDir.resolve(Instant.now().getEpochSecond() + "_" + filename);
